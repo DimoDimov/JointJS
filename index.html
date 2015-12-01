@@ -76,6 +76,8 @@
                     this.model.set('select', $(evt.target).val());
                 }, this));
                 this.$box.find('select').val(this.model.get('select'));
+                this.$box.find('input').val(this.model.get('input'));
+
                 this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
                 // Update the box position whenever the underlying model changes.
                 this.model.on('change', this.updateBox, this);
@@ -93,6 +95,7 @@
             updateBox: function() {
                 // Set the position and dimension of the box so that it covers the JointJS element.
                 var bbox = this.model.getBBox();
+
                 // Example of updating the HTML with a data stored in the cell model.
                 this.$box.find('label').text(this.model.get('label'));
                 this.$box.find('span').text(this.model.get('select'));
@@ -131,7 +134,8 @@
                 height: 100
             },
             label: 'I am HTML',
-            select: 'one'
+            select: 'one',
+            input: 'custom in'
         });
         var el2 = new joint.shapes.html.Element({
             position: {
@@ -143,7 +147,8 @@
                 height: 100
             },
             label: 'Me too',
-            select: 'two'
+            select: 'two',
+            input: 'custom in2'
         });
         var l = new joint.dia.Link({
             source: {

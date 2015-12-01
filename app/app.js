@@ -68,6 +68,8 @@
                                 this.model.set('select', $(evt.target).val());
                             }, this));
                             this.$box.find('select').val(this.model.get('select'));
+                            this.$box.find('input').val(this.model.get('input'));
+
                             this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
                             // Update the box position whenever the underlying model changes.
                             this.model.on('change', this.updateBox, this);
@@ -88,6 +90,8 @@
                             // Example of updating the HTML with a data stored in the cell model.
                             this.$box.find('label').text(this.model.get('label'));
                             this.$box.find('span').text(this.model.get('select'));
+                            this.$box.find('input').text(this.model.get('input'));
+
                             this.$box.css({
                                 width: bbox.width,
                                 height: bbox.height,
@@ -106,7 +110,7 @@
 
                 $scope.addCustomElement = addCustomElement;
 
-                function addCustomElement(x, y, label) {
+                function addCustomElement(x, y, label, select, input) {
                     //creating new Element
                     var customElement = new joint.shapes.html.Element({
                         position: {
@@ -118,7 +122,8 @@
                             height: 100
                         },
                         label: label,
-                        select: 'one'
+                        select: select,
+                        input: input
                     });
 
                     $scope.vm.graph.addCell(customElement);
@@ -211,11 +216,14 @@
 
                 scope.addJoint(rect, rect2);
 
-                var circle = scope.addCircle(200, 230, 'my circle');
+                var circle = scope.addCircle(480, 230, 'my circle');
 
                 scope.addJoint(circle, rect);
 
-                scope.addCustomElement(80, 180, 'I\'m custom');
+                //addCustomElement(x, y, label, select, input)
+                var customEl = scope.addCustomElement(80, 230, 'I\'m custom', 'two', 'custom yeaa');
+
+                scope.addJoint(circle, customEl);
             };
 
             return directive;
