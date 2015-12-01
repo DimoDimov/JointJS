@@ -18,7 +18,7 @@
             function controller($scope) {
                 //data coming from back end
                 $scope.backendData = [{
-                    customElType:'customEl',
+                    customElType: 'customEl',
                     x: 80,
                     y: 230,
                     label: 'I\'m custom',
@@ -242,6 +242,7 @@
 
                 scope.addJoint(circle, rect);
 
+                //we need to save the rendered elements for tracking by ID
                 var customElList = [];
 
                 var el;
@@ -250,12 +251,12 @@
                     el = scope.backendData[i];
                     if (el.customElType === 'customEl') {
                         customElList.push(scope.addCustomElement(el));
-                    };  
+                    };
                 };
                 //addCustomElement(x, y, label, select, input)
                 //var customEl = scope.addCustomElement(80, 230, 'I\'m custom', 'two', 'custom yeaa');
-                
 
+                console.log(customElList[0].id);
                 scope.addJoint(circle, customElList[0]);
             };
 
@@ -304,6 +305,12 @@
                     // your logic here: e.g. select a link by its options tool
                     console.log('link:options');
                 });
+
+                diagram.on('cell:pointerdown',
+                    function(cellView, evt, x, y) {
+                        console.log('cell view ' + cellView.model.id + ' was clicked');
+                    }
+                );
             };
 
             function newDiagram(height, width, gridSize, graph, targetElement) {
