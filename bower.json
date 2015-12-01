@@ -1,0 +1,23 @@
+{
+  "name": "jointjs",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "DimoDimov <dimo.ivanov.dimov@gmail.com>"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.8",
+    "bootstrap": "~3.3.6",
+    "jointjs": "~0.9.5"
+  }
+}
