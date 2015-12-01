@@ -112,6 +112,15 @@
         // Create JointJS elements and add them to the graph as usual.
         // -----------------------------------------------------------
 
+        var graph = new joint.dia.Graph;
+        var paper = new joint.dia.Paper({
+            el: $('#paper'),
+            width: 650,
+            height: 400,
+            gridSize: 1,
+            model: graph
+        });
+
         var el1 = new joint.shapes.html.Element({
             position: {
                 x: 80,
@@ -149,17 +158,6 @@
                     stroke: '#34495E'
                 }
             }
-        });
-
-
-
-        var graph = new joint.dia.Graph;
-        var paper = new joint.dia.Paper({
-            el: $('#paper'),
-            width: 650,
-            height: 400,
-            gridSize: 1,
-            model: graph
         });
 
         graph.addCells([el1, el2, l]);
