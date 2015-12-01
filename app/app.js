@@ -16,7 +16,7 @@
             };
 
             function controller($scope) {
-
+                console.log("wrapper Ctrl");
                 $scope.vm = {};
                 $scope.vm.graph = new joint.dia.Graph;
 
@@ -91,6 +91,8 @@
             };
 
             function link(scope, element, attrs) {
+                console.log("wrapper link creates elements after paper is being initialized");
+
                 var rect = scope.addRectangle(100, 30, 'my box');
 
                 var rect2 = scope.addRectangle(400, 30, 'my box');
@@ -151,6 +153,7 @@
             };
 
             function newDiagram(height, width, gridSize, graph, targetElement) {
+                console.log("jointDiagram Link");
 
                 var paper = new joint.dia.Paper({
                     el: targetElement,
