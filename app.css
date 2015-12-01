@@ -30,6 +30,31 @@
    /* Enable interacting with inputs only. */
    pointer-events: auto;   
 }
+
+.html-element button.add {
+   color: white;
+   border: none;
+   background-color: #00ff00;
+   border-radius: 20px;
+   width: 15px;
+   height: 15px;
+   line-height: 15px;
+   text-align: middle;
+   position: absolute;
+   top: 25px;
+   left: 167px;
+   padding: 0;
+   margin: 0;
+   font-weight: bold;
+   cursor: pointer;
+}
+
+.html-element button.add:hover {
+   width: 20px;
+   height: 20px;
+   line-height: 20px;
+}
+
 .html-element button.delete {
    color: white;
    border: none;
