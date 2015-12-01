@@ -16,6 +16,16 @@
             };
 
             function controller($scope) {
+                //data coming from back end
+                $scope.backendData = [{
+                    customElType:'customEl',
+                    x: 80,
+                    y: 230,
+                    label: 'I\'m custom',
+                    select: 'two',
+                    input: 'custom yeaa'
+                }];
+
                 console.log("wrapper Ctrl");
 
                 function declareCustomElements() {
@@ -90,7 +100,18 @@
                             // Example of updating the HTML with a data stored in the cell model.
                             this.$box.find('label').text(this.model.get('label'));
                             this.$box.find('span').text(this.model.get('select'));
-                            this.$box.find('input').text(this.model.get('input'));
+                            this.$box.find('input').val(this.model.get('input'));
+
+                            console.log();
+                            console.log('---------');
+                            console.log('--------this.model:');
+                            console.log(this.model.get('input'));
+                            console.log('--------this.$box:');
+                            console.log(this.$box.find('input').val());
+                            //var inputRdy = this.$box.find('input');
+                            //console.log(inputRdy);
+                            //this.$box.find('input') ? console.log(this.$box.find('input').value)
+
 
                             this.$box.css({
                                 width: bbox.width,
@@ -110,20 +131,21 @@
 
                 $scope.addCustomElement = addCustomElement;
 
-                function addCustomElement(x, y, label, select, input) {
+                //x, y, label, select, input
+                function addCustomElement(el) {
                     //creating new Element
                     var customElement = new joint.shapes.html.Element({
                         position: {
-                            x: x,
-                            y: y
+                            x: el.x,
+                            y: el.y
                         },
                         size: {
                             width: 170,
                             height: 100
                         },
-                        label: label,
-                        select: select,
-                        input: input
+                        label: el.label,
+                        select: el.select,
+                        input: el.input
                     });
 
                     $scope.vm.graph.addCell(customElement);
@@ -220,10 +242,21 @@
 
                 scope.addJoint(circle, rect);
 
-                //addCustomElement(x, y, label, select, input)
-                var customEl = scope.addCustomElement(80, 230, 'I\'m custom', 'two', 'custom yeaa');
+                var customElList = [];
 
-                scope.addJoint(circle, customEl);
+                var el;
+                for (var i = 0; i < scope.backendData.length; i++) {
+                    //customElType:'customEl'
+                    el = scope.backendData[i];
+                    if (el.customElType === 'customEl') {
+                        customElList.push(scope.addCustomElement(el));
+                    };  
+                };
+                //addCustomElement(x, y, label, select, input)
+                //var customEl = scope.addCustomElement(80, 230, 'I\'m custom', 'two', 'custom yeaa');
+                
+
+                scope.addJoint(circle, customElList[0]);
             };
 
             return directive;
