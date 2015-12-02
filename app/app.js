@@ -54,6 +54,7 @@
                         template: [
                             '<div class="html-element">',
                             '<button class="delete">x</button>',
+                            '<button class="add">+</button>',
                             '<label></label>',
                             '<span></span>', '<br/>',
                             '<select><option>--</option><option>one</option><option>two</option></select>',
@@ -80,6 +81,8 @@
                             this.$box.find('select').val(this.model.get('select'));
                             this.$box.find('input').val(this.model.get('input'));
 
+                            this.$box.find('.add').on('click', _.bind(this.addLink, this));
+
                             this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
                             // Update the box position whenever the underlying model changes.
                             this.model.on('change', this.updateBox, this);
@@ -102,13 +105,6 @@
                             this.$box.find('span').text(this.model.get('select'));
                             this.$box.find('input').val(this.model.get('input'));
 
-                            // console.log();
-                            // console.log('---------');
-                            // console.log('--------this.model:');
-                            // console.log(this.model.get('input'));
-                            // console.log('--------this.$box:');
-                            // console.log(this.$box.find('input').val());
-
                             this.$box.css({
                                 width: bbox.width,
                                 height: bbox.height,
@@ -119,6 +115,29 @@
                         },
                         removeBox: function(evt) {
                             this.$box.remove();
+                        },
+                        addLink: function(evt) {
+
+                            var theOnlyLink = new joint.dia.Link({
+                                source: {
+                                    id: this.model.id
+                                },
+                                target: {
+                                    x: this.model.position().x + this.model.attributes.size.width + 100,
+                                    y: this.model.position().y + this.model.attributes.size.height / 2
+                                },
+                                attrs: {
+                                    sourceCellView: this
+                                },
+                            });
+
+                            this.$box.find('.add').hide();
+
+                            $scope.vm.graph.addCell(theOnlyLink);
+                        },
+                        showAddButton: function(evt) {
+
+                            this.$box.find('.add').show();
                         }
                     });
                 };
@@ -249,11 +268,7 @@
                         customElList.push(scope.addCustomElement(el));
                     };
                 };
-                //addCustomElement(x, y, label, select, input)
-                //var customEl = scope.addCustomElement(80, 230, 'I\'m custom', 'two', 'custom yeaa');
 
-                console.log(customElList[0].id);
-                scope.addJoint(circle, customElList[0]);
             };
 
             return directive;
@@ -283,26 +298,38 @@
 
                 var diagram = newDiagram(scope.height, scope.width, scope.gridSize, scope.graph, element[0]);
 
+                //handles the remove link actions
+                scope.graph.on('remove', function(cell, collection, opt) {
+
+                    if (cell.isLink()) {
+
+                        var sourceCellView = cell.get('attrs').sourceCellView;
+
+                        sourceCellView.showAddButton();
+                    }
+                });
+
+                //-------------testing functions------------
                 //add event handlers to interact with the diagram
-                diagram.on('cell:pointerclick', function(cellView, evt, x, y) {
+                scope.graph.on('cell:pointerclick', function(cellView, evt, x, y) {
 
                     //your logic here e.g. select the element
                     console.log('cell:pointerclick');
                 });
 
-                diagram.on('blank:pointerclick', function(evt, x, y) {
+                scope.graph.on('blank:pointerclick', function(evt, x, y) {
 
                     // your logic here e.g. unselect the element by clicking on a blank part of the diagram
                     console.log('blank:pointerclick');
                 });
 
-                diagram.on('link:options', function(evt, cellView, x, y) {
+                scope.graph.on('link:options', function(evt, cellView, x, y) {
 
                     // your logic here: e.g. select a link by its options tool
                     console.log('link:options');
                 });
 
-                diagram.on('cell:pointerdown',
+                scope.graph.on('cell:pointerdown',
                     function(cellView, evt, x, y) {
                         console.log('cell view ' + cellView.model.id + ' was clicked');
                     }

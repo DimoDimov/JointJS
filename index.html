@@ -60,7 +60,6 @@
             ].join(''),
 
             initialize: function() {
-                console.log(this);
                 _.bindAll(this, 'updateBox');
                 joint.dia.ElementView.prototype.initialize.apply(this, arguments);
 
@@ -117,7 +116,7 @@
             },
             addLink: function(evt) {
 
-                var somelink3 = new joint.dia.Link({
+                var theOnlyLink = new joint.dia.Link({
                     source: {
                         id: this.model.id
                     },
@@ -125,12 +124,14 @@
                         x: this.model.position().x + this.model.attributes.size.width + 100,
                         y: this.model.position().y + this.model.attributes.size.height / 2
                     },
-                    attrs: {}
+                    attrs: {
+                        sourceCellView: this
+                    },
                 });
 
                 this.$box.find('.add').hide();
 
-                graph.addCell(somelink3);
+                graph.addCell(theOnlyLink);
             },
             showAddButton: function(evt) {
                 this.$box.find('.add').show();
@@ -226,19 +227,17 @@
 
         graph.on('remove', function(cell, collection, opt) {
             if (cell.isLink()) {
-                debugger;
-                var sourceId = cell.attributes.source.id;
-                var sourceEl = graph.getCell(sourceId);
-
-                var bbox = sourceEl.getBBox();
+                var sourceCellView = cell.get('attrs').sourceCellView;
+                sourceCellView.showAddButton();
             }
         });
 
-        paper.on('cell:pointerdown',
-            function(cellView, evt, x, y) {
-                console.log('cell view ' + cellView.model.id + ' was clicked');
-            }
-        );
+        // paper.on('cell:pointerdown',
+        //     function(cellView, evt, x, y) {
+        //         console.log(cellView);
+        //         console.log('cell view ' + cellView.model.id + ' was clicked');
+        //     }
+        // );
     });
     </script>
 </body>
