@@ -1,3 +1,7 @@
+.wrapper{
+   position: relative;
+}
+
 #paper {
    position: relative;
    border: 1px solid gray;
@@ -41,7 +45,7 @@
    line-height: 15px;
    text-align: middle;
    position: absolute;
-   top: 25px;
+   top: 40px;
    left: 167px;
    padding: 0;
    margin: 0;
@@ -85,12 +89,13 @@
 .html-element input {
    position: absolute;
    bottom: 0;
-   left: 0;
+   left: 5;
    right: 0;
    border: none;
    color: #333;
    padding: 5px;
    height: 25px;
+   width:155px;
 }
 .html-element label {
    color: #333;

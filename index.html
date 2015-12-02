@@ -19,6 +19,7 @@
 </head>
 
 <body ng-app="app">
+    <div style="height:100px;"></div>
     <wrapper class="wrapper"></wrapper>
     <div id="paper"></div>
     <script type="text/javascript">
@@ -39,7 +40,7 @@
                         'fill-opacity': 0
                     }
                 }
-            }, joint.shapes.basic.Rect.prototype.defaults)
+            }, joint.shapes.basic.Rect.prototype.defaults),
         });
 
         // Create a custom view for that element that displays an HTML div above it.
@@ -59,12 +60,13 @@
             ].join(''),
 
             initialize: function() {
+                console.log(this);
                 _.bindAll(this, 'updateBox');
                 joint.dia.ElementView.prototype.initialize.apply(this, arguments);
 
                 this.$box = $(_.template(this.template)());
                 // Prevent paper from handling pointerdown.
-                this.$box.find('input,select').on('mousedown click', function(evt) {
+                this.$box.find('input, select').on('mousedown click', function(evt) {
                     evt.stopPropagation();
                 });
                 // This is an example of reacting on the input change and storing the input data in the cell model.
@@ -77,7 +79,7 @@
                 this.$box.find('select').val(this.model.get('select'));
                 this.$box.find('input').val(this.model.get('input'));
 
-                this.$box.find('.add').on('click', _.bind(this.addLink, this.model));
+                this.$box.find('.add').on('click', _.bind(this.addLink, this));
 
                 this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
 
@@ -114,26 +116,24 @@
                 this.$box.remove();
             },
             addLink: function(evt) {
-                // this.position()
-                var constEl = {
-                    height: 25,
-                    width: 167
-                };
 
                 var somelink3 = new joint.dia.Link({
                     source: {
-                        x: this.position().x + constEl.height,
-                        y: this.position().y + constEl.width
+                        id: this.model.id
                     },
                     target: {
-                        x: this.position().x + constEl.height,
-                        y: this.position().y + constEl.width + 100
+                        x: this.model.position().x + this.model.attributes.size.width + 100,
+                        y: this.model.position().y + this.model.attributes.size.height / 2
                     },
                     attrs: {}
                 });
-                //debugger;
+
+                this.$box.find('.add').hide();
 
                 graph.addCell(somelink3);
+            },
+            showAddButton: function(evt) {
+                this.$box.find('.add').show();
             }
         });
 
@@ -151,7 +151,7 @@
 
         var el1 = new joint.shapes.html.Element({
             position: {
-                x: 380,
+                x: 280,
                 y: 30
             },
             size: {
@@ -175,20 +175,20 @@
             select: 'two',
             input: 'custom in2'
         });
-        var l = new joint.dia.Link({
-            source: {
-                id: el1.id
-            },
-            target: {
-                id: el2.id
-            },
-            attrs: {
-                '.connection': {
-                    'stroke-width': 5,
-                    stroke: '#34495E'
-                }
-            }
-        });
+        // var l = new joint.dia.Link({
+        //     source: {
+        //         id: el1.id
+        //     },
+        //     target: {
+        //         id: el2.id
+        //     },
+        //     attrs: {
+        //         '.connection': {
+        //             'stroke-width': 5,
+        //             stroke: '#34495E'
+        //         }
+        //     }
+        // });
 
         //------------Links-----------------
 
@@ -222,7 +222,23 @@
             }
         });
 
-        graph.addCells([el1, el2, l, link3]);
+        graph.addCells([el1, el2, link3]);
+
+        graph.on('remove', function(cell, collection, opt) {
+            if (cell.isLink()) {
+                debugger;
+                var sourceId = cell.attributes.source.id;
+                var sourceEl = graph.getCell(sourceId);
+
+                var bbox = sourceEl.getBBox();
+            }
+        });
+
+        paper.on('cell:pointerdown',
+            function(cellView, evt, x, y) {
+                console.log('cell view ' + cellView.model.id + ' was clicked');
+            }
+        );
     });
     </script>
 </body>

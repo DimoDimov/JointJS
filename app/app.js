@@ -102,16 +102,12 @@
                             this.$box.find('span').text(this.model.get('select'));
                             this.$box.find('input').val(this.model.get('input'));
 
-                            console.log();
-                            console.log('---------');
-                            console.log('--------this.model:');
-                            console.log(this.model.get('input'));
-                            console.log('--------this.$box:');
-                            console.log(this.$box.find('input').val());
-                            //var inputRdy = this.$box.find('input');
-                            //console.log(inputRdy);
-                            //this.$box.find('input') ? console.log(this.$box.find('input').value)
-
+                            // console.log();
+                            // console.log('---------');
+                            // console.log('--------this.model:');
+                            // console.log(this.model.get('input'));
+                            // console.log('--------this.$box:');
+                            // console.log(this.$box.find('input').val());
 
                             this.$box.css({
                                 width: bbox.width,
